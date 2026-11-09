@@ -320,7 +320,7 @@ footer{padding-block:28px 96px;color:var(--muted);border-top:1px solid var(--lin
 :root[data-design="hex"] .btn:hover{transform:none;filter:brightness(1.15)}
 :root[data-design="hex"] .hexmeta{display:flex;flex-wrap:wrap;gap:6px 22px;margin-top:34px;padding-top:14px;border-top:1px solid var(--line);font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--muted);font-variant-numeric:tabular-nums}
 .hexmeta b{color:var(--ink);font-weight:500}
-:root[data-design="hex"] .hexhero{display:block;grid-column:2;grid-row:1 / span 5;justify-self:center;position:relative;width:min(100%,400px);aspect-ratio:.866;max-width:100%;cursor:pointer;background:none;border:0;padding:0;color:inherit;--px:0px;--py:0px}
+:root[data-design="hex"] .hexhero{display:block;grid-column:2;grid-row:1 / span 5;justify-self:center;position:relative;width:min(100%,clamp(260px,30vw,600px),calc(64vh * .866));aspect-ratio:.866;max-width:100%;cursor:pointer;background:none;border:0;padding:0;color:inherit;--px:0px;--py:0px}
 .hexhero .ring{position:absolute;inset:0;transform:translate(calc(18px + var(--px)),calc(-14px + var(--py)));transition:transform .25s ease-out}
 .hexhero .ring svg{width:100%;height:100%;display:block;overflow:visible}
 .hexhero .hh{position:absolute;inset:0;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:var(--surface)}
@@ -334,7 +334,9 @@ footer{padding-block:28px 96px;color:var(--muted);border-top:1px solid var(--lin
 :root[data-design="hex"] h2{font-weight:300;font-size:clamp(26px,3.4vw,40px);letter-spacing:.06em}
 :root[data-design="hex"] .chip{border:0;border-radius:0;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:9px 14px;background:var(--surface);color:var(--muted);clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px)}
 :root[data-design="hex"] .chip[aria-pressed="true"]{background:var(--key);color:var(--on-key)}
-.hexsec{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:48px;align-items:start}
+.hexsec{display:grid;grid-template-columns:minmax(0,1fr) clamp(250px,20vw,360px);gap:clamp(28px,3.4vw,64px);align-items:start}
+:root[data-design="hex"] .wrap{max-width:min(1760px,100%)}
+:root[data-design="hex"] .bar{max-width:min(1760px,100%)}
 .honey{position:relative;min-width:0}
 .hx{all:unset;position:absolute;cursor:pointer;transition:transform .3s ease;--mx:50%;--my:50%}
 .hx .hb,.hx .hi{position:absolute;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
@@ -675,7 +677,9 @@ function render(){
     const arranja=()=>{
       const W=honey.clientWidth; if(!W) return;
       const g=W<560?6:10;
-      const cols=Math.max(2,Math.min(5,Math.round(W/250)));
+      // tamanho-alvo do hexágono acompanha a tela: largura da janela e altura (uma linha inteira sempre cabe)
+      const alvo=Math.max(130,Math.min(innerWidth*.17,innerHeight*.46*.866,380));
+      const cols=Math.max(2,Math.min(8,Math.floor((W+g)/(alvo+g))));
       const w=(W-(cols-1)*g-g/2)/(cols+.5), h=w*2/Math.sqrt(3), step=h*.75+g*.866;
       let rows=0;
       cells.forEach((b,i)=>{
@@ -690,6 +694,7 @@ function render(){
     arranja();
     if(window.__honeyRO) window.__honeyRO.disconnect();
     window.__honeyRO=new ResizeObserver(arranja); window.__honeyRO.observe(honey);
+    window.__honeyFit=arranja;
     return;
   } else if(d==="estudio"){
     wrap=document.createElement("div"); wrap.className="grid";
@@ -831,7 +836,7 @@ function desenha(){
     if(t>.72){ctx.fillStyle=`rgba(0,0,0,${((t-.72)*.1).toFixed(3)})`;ctx.fill();}
   }
 }
-addEventListener("resize",()=>{ if(root.dataset.design==="hex") prepara(); });
+addEventListener("resize",()=>{ if(root.dataset.design==="hex"){ prepara(); if(window.__honeyFit) window.__honeyFit(); } });
 const hh=document.getElementById("hexhero");
 // Enquadramento das imagens nos hexágonos: salvo no armazenamento do site, editável pelo dono
 let F={"2L8PeB":{"x":43.88,"y":32.86,"z":1},"41XmG1":{"x":53.09,"y":9.75,"z":1.26},"5eXmGJ":{"x":11.73,"y":65.59,"z":1},"8b0lXm":{"x":48.81,"y":42.01,"z":2.0},"9BNW9o":{"x":47.62,"y":50.94,"z":1},"EYaB5e":{"x":25.78,"y":50.32,"z":1.47},"GvPrE1":{"x":71.79,"y":60.2,"z":1.59},"JvQyJA":{"x":26.86,"y":23.15,"z":1},"K3L9wR":{"x":12.04,"y":11.91,"z":1.17},"La3DwR":{"x":27.82,"y":10.84,"z":2.16},"aoA3oq":{"x":66.65,"y":54.32,"z":1},"aorYvR":{"x":49.06,"y":30.84,"z":1.71},"bgzZ1a":{"x":65.04,"y":8.12,"z":1.17},"n0AB1K":{"x":0,"y":77.98,"z":1},"x3JeOW":{"x":71.14,"y":15.08,"z":1.17}}, editing=false, sel=null, arrastando=false, frRef=null, salvando=Promise.resolve(), tSalva=0;
