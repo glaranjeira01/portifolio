@@ -335,6 +335,8 @@ footer{padding-block:28px 96px;color:var(--muted);border-top:1px solid var(--lin
 :root[data-design="hex"] .chip{border:0;border-radius:0;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:9px 14px;background:var(--surface);color:var(--muted);clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px)}
 :root[data-design="hex"] .chip[aria-pressed="true"]{background:var(--key);color:var(--on-key)}
 .hexsec{display:grid;grid-template-columns:minmax(0,1fr) clamp(280px,27vw,860px);gap:clamp(28px,3.4vw,64px);align-items:start}
+/* Hex em telas grandes: tudo em escala 75% (como o zoom do navegador em 75%) */
+@media (min-width:1800px){ :root[data-design="hex"] header,:root[data-design="hex"] main{zoom:.75} }
 /* Hex sem largura máxima: o layout ocupa a tela toda e cresce com ela */
 :root[data-design="hex"] .wrap{max-width:none;padding-inline:clamp(0px,calc(4vw - 16px),160px)}
 @media (min-width:1700px){
@@ -698,7 +700,8 @@ function render(){
       const W=honey.clientWidth; if(!W) return;
       const g=W<560?6:10;
       // tamanho-alvo do hexágono acompanha a tela: largura da janela e altura (uma linha inteira sempre cabe)
-      const alvo=Math.max(120,Math.min(innerWidth*.14,innerHeight*.38*.866));
+      const z=escala();
+      const alvo=Math.max(120,Math.min(innerWidth/z*(z<1?.105:.14),innerHeight/z*.38*.866));
       const cols=Math.max(2,Math.min(8,Math.floor((W+g)/(alvo+g))));
       const w=(W-(cols-1)*g-g/2)/(cols+.5), h=w*2/Math.sqrt(3), step=h*.75+g*.866;
       let rows=0;
@@ -713,8 +716,8 @@ function render(){
     // painel de leitura sempre centralizado na altura da tela (abaixo do cabeçalho)
     const centraliza=()=>{
       if(innerWidth<=900){ ro.style.top=""; return; }
-      const hd=document.querySelector("header").getBoundingClientRect().height;
-      ro.style.top=Math.max(hd+16,(innerHeight+hd-ro.offsetHeight)/2)+"px";
+      const z=escala(), hd=document.querySelector("header").getBoundingClientRect().height, h=ro.getBoundingClientRect().height;
+      ro.style.top=(Math.max(hd+16,(innerHeight+hd-h)/2)/z)+"px";
     };
     if(window.__roRO) window.__roRO.disconnect();
     window.__roRO=new ResizeObserver(centraliza); window.__roRO.observe(ro);
@@ -870,6 +873,7 @@ const hh=document.getElementById("hexhero");
 // Enquadramento das imagens nos hexágonos: salvo no armazenamento do site, editável pelo dono
 let F={"2L8PeB":{"x":43.88,"y":32.86,"z":1},"41XmG1":{"x":53.09,"y":9.75,"z":1.26},"5eXmGJ":{"x":11.73,"y":65.59,"z":1},"8b0lXm":{"x":48.81,"y":42.01,"z":2.0},"9BNW9o":{"x":47.62,"y":50.94,"z":1},"EYaB5e":{"x":25.78,"y":50.32,"z":1.47},"GvPrE1":{"x":71.79,"y":60.2,"z":1.59},"JvQyJA":{"x":26.86,"y":23.15,"z":1},"K3L9wR":{"x":12.04,"y":11.91,"z":1.17},"La3DwR":{"x":27.82,"y":10.84,"z":2.16},"aoA3oq":{"x":66.65,"y":54.32,"z":1},"aorYvR":{"x":49.06,"y":30.84,"z":1.71},"bgzZ1a":{"x":65.04,"y":8.12,"z":1.17},"n0AB1K":{"x":0,"y":77.98,"z":1},"x3JeOW":{"x":71.14,"y":15.08,"z":1.17}}, editing=false, sel=null, arrastando=false, frRef=null, salvando=Promise.resolve(), tSalva=0;
 const lim=(v,a,b)=>Math.min(b,Math.max(a,v));
+function escala(){ const m=document.querySelector("main"); return m?(parseFloat(getComputedStyle(m).zoom)||1):1; }
 const fr=a=>F[a]||{x:50,y:50,z:1};
 function aplicaEl(img,a){ if(!img) return; const f=fr(a); img.style.setProperty("--ox",f.x.toFixed(2)+"%"); img.style.setProperty("--oy",f.y.toFixed(2)+"%"); img.style.setProperty("--z",f.z.toFixed(3)); }
 function aplicaHero(){ const on=hh.querySelector(".hh img.on"); if(on&&ROT[rot]) aplicaEl(on,ROT[rot].a); }
