@@ -312,7 +312,7 @@ footer{padding-block:28px 96px;color:var(--muted);border-top:1px solid var(--lin
 :root[data-design="hex"] .hero > *:not(.hexhero){grid-column:1}
 :root[data-design="hex"] .label{color:var(--muted);font-size:11px;letter-spacing:.14em;display:flex;gap:10px;align-items:baseline;line-height:1.7}
 :root[data-design="hex"] .label::before{content:"⬡";color:var(--key);font-size:13px;letter-spacing:0}
-:root[data-design="hex"] h1{font-weight:250;font-size:clamp(40px,6.2vw,88px);line-height:.95;letter-spacing:.02em;margin:18px 0 30px}
+:root[data-design="hex"] h1{font-weight:250;font-size:clamp(40px,6.2vw,220px);line-height:.95;letter-spacing:.02em;margin:18px 0 30px}
 :root[data-design="hex"] h1 .k{color:var(--ink);font-weight:600;display:block}
 .chamfer{clip-path:polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px)}
 :root[data-design="hex"] .btn{border:0;border-radius:0;padding:13px 20px;font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;background:var(--surface);color:var(--ink);clip-path:polygon(9px 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%,0 9px)}
@@ -320,7 +320,7 @@ footer{padding-block:28px 96px;color:var(--muted);border-top:1px solid var(--lin
 :root[data-design="hex"] .btn:hover{transform:none;filter:brightness(1.15)}
 :root[data-design="hex"] .hexmeta{display:flex;flex-wrap:wrap;gap:6px 22px;margin-top:34px;padding-top:14px;border-top:1px solid var(--line);font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--muted);font-variant-numeric:tabular-nums}
 .hexmeta b{color:var(--ink);font-weight:500}
-:root[data-design="hex"] .hexhero{display:block;grid-column:2;grid-row:1 / span 5;justify-self:center;position:relative;width:min(100%,clamp(260px,30vw,600px),calc(64vh * .866));aspect-ratio:.866;max-width:100%;cursor:pointer;background:none;border:0;padding:0;color:inherit;--px:0px;--py:0px}
+:root[data-design="hex"] .hexhero{display:block;grid-column:2;grid-row:1 / span 5;justify-self:center;position:relative;width:min(100%,clamp(260px,30vw,1100px),calc(64vh * .866));aspect-ratio:.866;max-width:100%;cursor:pointer;background:none;border:0;padding:0;color:inherit;--px:0px;--py:0px}
 .hexhero .ring{position:absolute;inset:0;transform:translate(calc(18px + var(--px)),calc(-14px + var(--py)));transition:transform .25s ease-out}
 .hexhero .ring svg{width:100%;height:100%;display:block;overflow:visible}
 .hexhero .hh{position:absolute;inset:0;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:var(--surface)}
@@ -334,9 +334,29 @@ footer{padding-block:28px 96px;color:var(--muted);border-top:1px solid var(--lin
 :root[data-design="hex"] h2{font-weight:300;font-size:clamp(26px,3.4vw,40px);letter-spacing:.06em}
 :root[data-design="hex"] .chip{border:0;border-radius:0;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:9px 14px;background:var(--surface);color:var(--muted);clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px)}
 :root[data-design="hex"] .chip[aria-pressed="true"]{background:var(--key);color:var(--on-key)}
-.hexsec{display:grid;grid-template-columns:minmax(0,1fr) clamp(250px,20vw,360px);gap:clamp(28px,3.4vw,64px);align-items:start}
-:root[data-design="hex"] .wrap{max-width:min(1760px,100%)}
-:root[data-design="hex"] .bar{max-width:min(1760px,100%)}
+.hexsec{display:grid;grid-template-columns:minmax(0,1fr) clamp(250px,20vw,640px);gap:clamp(28px,3.4vw,64px);align-items:start}
+/* Hex sem largura máxima: o layout ocupa a tela toda e cresce com ela */
+:root[data-design="hex"] .wrap{max-width:none;padding-inline:clamp(0px,calc(4vw - 16px),160px)}
+@media (min-width:1700px){
+  :root[data-design="hex"] body{font-size:max(16px,.84vw)}
+  :root[data-design="hex"] .logo{font-size:max(13px,.72vw)}
+  :root[data-design="hex"] nav.top{gap:max(20px,1.3vw)}
+  :root[data-design="hex"] nav.top a{font-size:max(12px,.64vw)}
+  :root[data-design="hex"] .bar{padding-block:max(14px,.9vw)}
+  :root[data-design="hex"] .label,:root[data-design="hex"] .hexmeta,:root[data-design="hex"] .hexhero .hcap{font-size:max(11px,.6vw)}
+  :root[data-design="hex"] .btn{font-size:max(12px,.64vw);padding:max(13px,.8vw) max(20px,1.2vw)}
+  :root[data-design="hex"] .chip{font-size:max(11px,.6vw);padding:max(9px,.55vw) max(14px,.85vw)}
+  :root[data-design="hex"] h2{font-size:max(40px,2.4vw)}
+  :root[data-design="hex"] section{padding-block:max(64px,4vw)}
+  :root[data-design="hex"] .hero{padding-block:max(64px,4vw) max(72px,4.6vw)}
+  :root[data-design="hex"] .readout h3{font-size:max(20px,1.15vw)}
+  :root[data-design="hex"] .readout dl{font-size:max(13px,.74vw)}
+  :root[data-design="hex"] .readout dt,:root[data-design="hex"] .readout .ix,:root[data-design="hex"] .readout .hint{font-size:max(10px,.56vw)}
+  :root[data-design="hex"] .highlights b{font-size:max(12px,.66vw)}
+  :root[data-design="hex"] .rig h4{font-size:max(12px,.64vw)}
+  :root[data-design="hex"] .rig li,:root[data-design="hex"] .links a,:root[data-design="hex"] .links div{font-size:max(15px,.84vw)}
+  :root[data-design="hex"] .highlights li{grid-template-columns:max(150px,9vw) 1fr}
+}
 .honey{position:relative;min-width:0}
 .hx{all:unset;position:absolute;cursor:pointer;transition:transform .3s ease;--mx:50%;--my:50%}
 .hx .hb,.hx .hi{position:absolute;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
@@ -678,7 +698,7 @@ function render(){
       const W=honey.clientWidth; if(!W) return;
       const g=W<560?6:10;
       // tamanho-alvo do hexágono acompanha a tela: largura da janela e altura (uma linha inteira sempre cabe)
-      const alvo=Math.max(130,Math.min(innerWidth*.17,innerHeight*.46*.866,380));
+      const alvo=Math.max(130,Math.min(innerWidth*.17,innerHeight*.46*.866));
       const cols=Math.max(2,Math.min(8,Math.floor((W+g)/(alvo+g))));
       const w=(W-(cols-1)*g-g/2)/(cols+.5), h=w*2/Math.sqrt(3), step=h*.75+g*.866;
       let rows=0;
